@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gen AI Text Summarizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Gen AI – Intelligent Text Summarizer</h1>
+
+<form method="POST">
+    <textarea name="text" placeholder="Paste your document here..." required>{{ original_text }}</textarea>
+    <button type="submit" name="generate">Generate Summary</button>
+</form>
+
+{% if expert %}
+
+<h2>Expert Summary</h2>
+<div class="summary-box">{{ expert }}</div>
+
+<h2>Simplified Summary</h2>
+<div class="summary-box">{{ simplified }}</div>
+
+<h2>Key Insights</h2>
+<div class="summary-box">{{ insights }}</div>
+
+<form method="POST">
+    <input type="hidden" name="existing_text" value="{{ original_text }}">
+    <button type="submit" name="show_add">Add More Text</button>
+</form>
+
+{% endif %}
+
+{% if show_add %}
+<div class="add-more">
+    <form method="POST">
+        <textarea name="extra_text" placeholder="Add additional text here..." required></textarea>
+        <input type="hidden" name="existing_text" value="{{ original_text }}">
+        <button type="submit" name="add_text">Add & Regenerate</button>
+    </form>
+</div>
+{% endif %}
+
+{% if history %}
+<h2>Text History</h2>
+<div class="history-section">
+    {% for item in history %}
+    <div class="history-item">
+        <p>{{ item }}</p>
+        <a href="{{ url_for('delete', index=loop.index0) }}">
+            <button class="delete-btn">Delete</button>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+</div>
+</body>
+</html>
